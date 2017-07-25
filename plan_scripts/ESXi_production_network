@@ -1,0 +1,38 @@
+## This is first version of file just for example
+## There is no any varibles here (reserved for future versions)
+##
+
+upload -<<END /ImageStreamer/esxi_networking_1
+#! /bin/bash
+cat <<"EOF" >>local.sh
+#remove default VM network
+esxcli network vswitch standard portgroup remove -v vSwitch0 -p 'VM Network'  
+
+#add second vmnic port to vSwitch1 (management)
+esxcli network vswitch standard uplink add -v vSwitch1 -u vmnic3   
+esxcli network vswitch standard policy failover set -v vSwitch1 -a vmnic2,vmnic3
+
+#add new vSwitch for production networks
+esxcli network vswitch standard add -v vSwitch2
+
+#add vmnics ports to vSwitch2 (production)
+esxcli network vswitch standard uplink add -v vSwitch2 -u vmnic4
+esxcli network vswitch standard uplink add -v vSwitch2 -u vmnic5
+esxcli network vswitch standard policy failover set -v vSwitch2 -a vmnic4,vmnic5
+
+#add production portgroups and VLANs
+esxcli network vswitch standard portgroup add -v vSwitch2 -p VLAN-55
+esxcli network vswitch standard portgroup set -p VLAN-55 -v 55
+esxcli network vswitch standard portgroup add -v vSwitch2 -p VLAN-56
+esxcli network vswitch standard portgroup set -p VLAN-56 -v 56
+esxcli network vswitch standard portgroup add -v vSwitch2 -p VLAN-57
+esxcli network vswitch standard portgroup set -p VLAN-56 -v 57
+
+EOF
+
+exit 0
+END
+
+download /ImageStreamer/esxi_networking_1 esxi_networking_1
+!source ./esxi_networking_1
+echo
