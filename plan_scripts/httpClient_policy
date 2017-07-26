@@ -1,0 +1,21 @@
+## This is first version of script, varibles will be add in future releases
+## This plan script enable httpClient in firewall settings
+##
+##
+
+upload -<<END /ImageStreamer/esxi_httppolicy
+#! /bin/bash
+cat <<"EOF" >>local.sh
+esxcli network firewall ruleset set -e true -r httpClient
+EOF
+exit 0
+END
+download /ImageStreamer/esxi_httppolicy esxi_httppolicy
+!source ./esxi_httppolicy
+echo
+
+
+
+
+
+
