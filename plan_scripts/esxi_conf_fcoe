@@ -1,0 +1,20 @@
+## This is first version of script, varibles will be add in future releases
+## This plan script configure fcoe at ESXi hosts.
+##
+##
+
+upload -<<END /ImageStreamer/esxi_conf_fcoe
+#! /bin/bash
+cat <<"EOF" >>local.sh
+for nic in `esxcli fcoe nic list | grep vmnic`
+do
+esxcli fcoe nic enable -n $nic
+esxcli fcoe nic discover -n $nic
+done
+esxcli fcoe adapter list
+EOF
+exit 0
+END
+download /ImageStreamer/esxi_conf_fcoe esxi_conf_fcoe
+!source ./esxi_conf_fcoe
+echo
