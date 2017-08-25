@@ -13,9 +13,3 @@ END
 download /ImageStreamer/esxi_httppolicy esxi_httppolicy
 !source ./esxi_httppolicy
 echo
-
-
-
-
-
-
