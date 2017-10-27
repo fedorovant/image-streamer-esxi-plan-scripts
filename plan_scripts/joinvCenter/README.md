@@ -13,5 +13,6 @@ You need to use this plan script together with https://github.com/fedorovant/ima
 Just create a copy of original HPE - ESXi - deploy .. build plan from https://github.com/HewlettPackard/image-streamer-esxi/tree/v3.1/artifact-bundles and customize it with this 2 additional steps:
 * httpClent plan script;
 * one of vCenter-add plan script;
+* at your custom build plan change `@vc_password1@` varible type from String to Password type.
 
 I'll add wiki page with step-by-step guide at near future.
