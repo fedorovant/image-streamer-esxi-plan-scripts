@@ -9,3 +9,5 @@ Please use:
 * vCenter-add-65 - for vCenter 6.5;
 
 You need to use this plan script together with https://github.com/fedorovant/image-streamer-esxi-plan-scripts/blob/master/plan_scripts/httpClient_policy
+
+I'll add wiki page with step-by-step guide at near future.
