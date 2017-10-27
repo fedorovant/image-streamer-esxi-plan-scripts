@@ -1,3 +1,5 @@
+# This is special version of plan script for HPE Image Streamer with varibles for Deployment Plan.
+
 upload -<<END /ImageStreamer/vc_add
 #! /bin/bash
 cat <<"AAA" >>local.sh
