@@ -15,7 +15,7 @@ import sys,re,os,urllib,urllib2,base64,syslog,socket
 vcenter_server = "@vcenter_server1@"
  
 # vCenter Cluster path
-cluster = "DEMO/host/Synergy"
+cluster = "@Datacenter-VC@/host/@Cluster-VC@"
  
 # vCenter credentials using encoded base64 password
 vc_username = "@vcenter_user1@"
@@ -23,7 +23,7 @@ vc_password = "@vc_password1@"
  
 # ESX(i) credentials using encoded base64 password
 host_username = "root"
-host_password = "@Password"
+host_password = "@Password@"
  
 ### DO NOT EDIT PAST HERE ###
  
