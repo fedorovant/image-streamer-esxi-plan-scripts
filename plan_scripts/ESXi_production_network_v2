@@ -1,0 +1,43 @@
+## This is second version of Production network creation
+## There is varibles here: @ManagementNIC1@, @ManagementNIC2@, @ProductionNIC1@,@ProductionNIC2@
+## You need to choose you real interfaces at Deployment
+##
+## This plan script configure a several vSwitches and uplinks in redundancy mode:
+## vSwitch1 - management with 2 uplinks - @ManagementNIC1@, @ManagementNIC2@;
+## vSwitch2 - production witch 2 uplinks - @ProductionNIC1@,@ProductionNIC2@;
+##
+upload -<<END /ImageStreamer/esxi_networking_v2
+#! /bin/bash
+cat <<"EOF" >>local.sh
+#remove default VM network
+esxcli network vswitch standard portgroup remove -v vSwitch0 -p 'VM Network'  
+
+#add second vmnic port to vSwitch1 (management)
+UPLINK2=`esxcli network nic list | grep -i "@ManagementNIC2.mac@" | awk '{ print $1 }'`
+UPLINK1=`esxcli network nic list | grep -i "@ManagementNIC.mac@" | awk '{ print $1 }'`
+esxcli network vswitch standard uplink add -v vSwitch1 -u $UPLINK2
+esxcli network vswitch standard policy failover set -v vSwitch1 -a $UPLINK1,$UPLINK2
+
+#add new vSwitch for production networks
+esxcli network vswitch standard add -v vSwitch2-Production
+
+#add vmnics ports to vSwitch2 (production)
+UPLINK3=`esxcli network nic list | grep -i "@ProductionNIC1.mac@" | awk '{ print $1 }'`
+UPLINK4=`esxcli network nic list | grep -i "@ProductionNIC2.mac@" | awk '{ print $1 }'`
+esxcli network vswitch standard uplink add -v vSwitch2-Production -u $UPLINK3
+esxcli network vswitch standard uplink add -v vSwitch2-Production -u $UPLINK4
+esxcli network vswitch standard policy failover set -v vSwitch2-Production -a $UPLINK3,$UPLINK4
+
+#add production portgroups
+esxcli network vswitch standard portgroup add -v vSwitch2-Production -p VLAN-55
+esxcli network vswitch standard portgroup set -p VLAN-55 -v 55
+esxcli network vswitch standard portgroup add -v vSwitch2-Production -p VLAN-56
+esxcli network vswitch standard portgroup set -p VLAN-56 -v 56
+EOF
+
+exit 0
+END
+
+download /ImageStreamer/esxi_networking_v2 esxi_networking_v2
+!source ./esxi_networking_v2
+echo
