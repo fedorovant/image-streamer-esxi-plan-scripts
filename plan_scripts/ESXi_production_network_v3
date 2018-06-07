@@ -1,4 +1,5 @@
-## This is second version of Production network creation
+## This is third version of Production network creation
+## Add network-sets as Uplinks in Production profile and dynamic VLAN portgroup
 ## There is varibles here: @ManagementNIC1@, @ManagementNIC2@, @ProductionNIC1@,@ProductionNIC2@
 ## You need to choose you real interfaces at Deployment
 ##
@@ -29,10 +30,10 @@ esxcli network vswitch standard uplink add -v vSwitch2-Production -u $UPLINK4
 esxcli network vswitch standard policy failover set -v vSwitch2-Production -a $UPLINK3,$UPLINK4
 
 #add production portgroups
-esxcli network vswitch standard portgroup add -v vSwitch2-Production -p VLAN-55
-esxcli network vswitch standard portgroup set -p VLAN-55 -v 55
-esxcli network vswitch standard portgroup add -v vSwitch2-Production -p VLAN-56
-esxcli network vswitch standard portgroup set -p VLAN-56 -v 56
+esxcli network vswitch standard portgroup add -v vSwitch2-Production -p @ProductionNIC1.vlanid:0@
+esxcli network vswitch standard portgroup set -p @ProductionNIC1.vlanid:0@ -v @ProductionNIC1.vlanid:0@
+esxcli network vswitch standard portgroup add -v vSwitch2-Production -p @ProductionNIC2.vlanid:0@
+esxcli network vswitch standard portgroup set -p @ProductionNIC2.vlanid:0@ -v @ProductionNIC2.vlanid:0@
 EOF
 
 exit 0
