@@ -1,7 +1,7 @@
 ## This is third version of Production network creation
 ## Add network-sets as Uplinks in Production profile and dynamic VLAN portgroup
 ## There is varibles here: @ManagementNIC1@, @ManagementNIC2@, @ProductionNIC1@,@ProductionNIC2@
-## You need to choose you real interfaces at Deployment
+## You need to choose your real interfaces at Deployment
 ##
 ## This plan script configure a several vSwitches and uplinks in redundancy mode:
 ## vSwitch1 - management with 2 uplinks - @ManagementNIC1@, @ManagementNIC2@;
