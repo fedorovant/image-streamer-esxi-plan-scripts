@@ -1,0 +1,16 @@
+## This is first version of vMotion role creation at management network
+## You need to choose your real vmk interface at Deployment
+## By default vmk2 is management at Image Streamer artifacts
+##
+upload -<<END /ImageStreamer/esxi_conf_vmotion
+#! /bin/bash
+cat <<"EOF" >>local.sh
+vim-cmd hostsvc/vmotion/vnic_set vmk2
+EOF
+
+exit 0
+END
+
+download /ImageStreamer/esxi_conf_vmotion esxi_conf_vmotion
+!source ./esxi_conf_vmotion
+echo
