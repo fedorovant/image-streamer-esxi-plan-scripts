@@ -1,0 +1,20 @@
+## This is first version of core dump partition creation on SD card (32GB)
+## 32GB SD card always have id - eui.00e04c2020202000
+## 
+upload -<<END /ImageStreamer/sd_core_dump
+#! /bin/bash
+cat <<"EOF" >>local.sh
+#add SD card like coredump
+/etc/init.d/usbarbitrator stop
+partedUtil delete "/vmfs/devices/disks/eui.00e04c2020202000" 1
+partedUtil set "/vmfs/devices/disks/eui.00e04c2020202000" "1 8192 60456959 252 0"
+esxcli system coredump partition set --partition="eui.00e04c2020202000:1"
+esxcli system coredump partition set --enable true
+EOF
+
+exit 0
+END
+
+download /ImageStreamer/sd_core_dump sd_core_dump
+!source ./sd_core_dump
+echo
