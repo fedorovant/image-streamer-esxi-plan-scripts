@@ -1,0 +1,41 @@
+# (c) Copyright 2017 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at #http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES #OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+echo "########################################"
+echo "Enable Broadcom FCoE Offload                                                            "
+echo "########################################"
+
+upload -<<END /ImageStreamer/esxi_broadcomoffload
+#! /bin/bash
+cat <<"EOF" >>local.sh
+esxcli fcoe nic list | grep -i "^vmnic" > /scratch/vmnic_fc.txt
+
+count=$(esxcli fcoe nic list | grep -c vmnic)
+
+for i in $(seq 1 1 $count)
+do
+        vmnic=$(sed -n "$i"p /scratch/vmnic_fc.txt)
+        ethtool -i $vmnic | grep "bnx2" &> /dev/null
+        # Only Run the command for Broadcom adapters
+        if [ $? -eq 0 ]; then
+                 esxcli fcoe nic discover -n $vmnic;
+        fi
+            sleep 1;
+done
+rm -f /scratch/vmnic_fc.txt
+EOF
+
+exit 0
+END
+
+download /ImageStreamer/esxi_broadcomoffload esxi_broadcomoffload
+!source ./esxi_broadcomoffload
+echo
